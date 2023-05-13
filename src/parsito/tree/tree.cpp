@@ -36,7 +36,7 @@ node& tree::add_node(const string& form) {
   return nodes.back();
 }
 
-void tree::set_head(int id, int head, const string& deprel) {
+  void tree::set_head(int id, int head, const string& deprel, float prob) {
   assert(id >= 0 && id < int(nodes.size()));
   assert(head < int(nodes.size()));
 
@@ -53,6 +53,7 @@ void tree::set_head(int id, int head, const string& deprel) {
   // Set new head
   nodes[id].head = head;
   nodes[id].deprel = deprel;
+  nodes[id].prob = prob;
   if (head >= 0) {
     auto& children = nodes[head].children;
     size_t i = children.size();

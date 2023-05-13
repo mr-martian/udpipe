@@ -69,7 +69,7 @@ unique_ptr<transition_oracle::tree_oracle> transition_system_swap_oracle_static:
     while (!conf.final()) {
       auto prediction = projective_oracle.predict(conf, 0, 0);
       if (!system.applicable(conf, prediction.to_follow)) break;
-      system.perform(conf, prediction.to_follow);
+      system.perform(conf, prediction.to_follow, 0.0);
     }
 
     projective_components.assign(gold.nodes.size(), 0);

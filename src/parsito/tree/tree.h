@@ -25,7 +25,7 @@ class tree {
   bool empty();
   void clear();
   node& add_node(const string& form);
-  void set_head(int id, int head, const string& deprel);
+  void set_head(int id, int head, const string& deprel, float prob=0.0);
   void unlink_all_nodes();
 
   static const string root_form;

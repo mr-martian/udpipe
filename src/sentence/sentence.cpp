@@ -39,7 +39,7 @@ word& sentence::add_word(string_piece form) {
   return words.back();
 }
 
-void sentence::set_head(int id, int head, const string& deprel) {
+void sentence::set_head(int id, int head, const string& deprel, float prob) {
   assert(id >= 0 && id < int(words.size()));
   assert(head < int(words.size()));
 
@@ -56,6 +56,9 @@ void sentence::set_head(int id, int head, const string& deprel) {
   // Set new head
   words[id].head = head;
   words[id].deprel = deprel;
+  if (prob > 0.0) {
+    words[id].set_prob(prob);
+  }
   if (head >= 0) {
     auto& children = words[head].children;
     size_t i = children.size();

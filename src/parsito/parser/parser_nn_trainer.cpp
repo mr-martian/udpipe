@@ -336,7 +336,7 @@ void parser_nn_trainer::train(const string& transition_system_name, const string
             break;
 
           // Follow the chosen outcome
-          int child = parser.system->perform(conf, prediction.to_follow);
+          int child = parser.system->perform(conf, prediction.to_follow, 0.0);
 
           // If a node was linked, recompute its embeddings as deprel has changed
           if (child >= 0)
@@ -387,7 +387,7 @@ void parser_nn_trainer::train(const string& transition_system_name, const string
               nodes_embeddings_eval = nodes_embeddings;
 
               // Perform probed transition
-              int child = parser.system->perform(conf_eval, transition);
+              int child = parser.system->perform(conf_eval, transition, 0.0);
               if (child >= 0)
                 for (size_t i = 0; i < parser.embeddings.size(); i++) {
                   parser.values[i].extract(t_eval.nodes[child], word);
@@ -412,7 +412,7 @@ void parser_nn_trainer::train(const string& transition_system_name, const string
                     network_best = i;
 
                 // Perform the best transition
-                int child = parser.system->perform(conf_eval, network_best);
+                int child = parser.system->perform(conf_eval, network_best, 0.0);
 
                 // If a node was linked, recompute its embeddings as deprel has changed
                 if (child >= 0)
@@ -444,7 +444,7 @@ void parser_nn_trainer::train(const string& transition_system_name, const string
             //                  network_best = i;
 
             // Follow the best outcome
-            int child = parser.system->perform(conf, /*network_*/best);
+            int child = parser.system->perform(conf, /*network_*/best, 0.0);
 
             // If a node was linked, recompute its embeddings as deprel has changed
             if (child >= 0)

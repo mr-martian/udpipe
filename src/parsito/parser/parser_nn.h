@@ -75,6 +75,7 @@ class parser_nn : public parser {
       configuration conf;
       vector<int> heads;
       vector<string> deprels;
+      vector<float> probs;
       double cost;
 
       void refresh_tree();
@@ -84,6 +85,7 @@ class parser_nn : public parser {
       const beam_size_configuration* bs_conf;
       int transition;
       double cost;
+      float prob = 0.0;
       bool operator<(const beam_size_alternative& other) const { return cost > other.cost; }
 
       beam_size_alternative(const beam_size_configuration* bs_conf, int transition, double cost)

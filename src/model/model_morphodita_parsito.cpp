@@ -144,8 +144,9 @@ bool model_morphodita_parsito::parse(sentence& s, const string& options, string&
   }
 
   parser->parse(c->tree, beam_search, cost);
-  for (size_t i = 1; i < s.words.size(); i++)
-    s.set_head(i, c->tree.nodes[i].head, c->tree.nodes[i].deprel);
+  for (size_t i = 1; i < s.words.size(); i++) {
+    s.set_head(i, c->tree.nodes[i].head, c->tree.nodes[i].deprel, c->tree.nodes[i].prob);
+  }
 
   parser_caches.push(c);
   return true;

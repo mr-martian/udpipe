@@ -27,6 +27,7 @@ class node {
   string deprel;  // dependency relation to the head
   string deps;    // secondary dependencies
   string misc;    // miscellaneous information
+  float prob = 0.0;
 
   vector<int> children;
 

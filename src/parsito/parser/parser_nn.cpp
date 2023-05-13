@@ -69,7 +69,7 @@ void parser_nn::parse_greedy(tree& t, double* cost) const {
         best = i;
 
     // Perform the best transition
-    int child = system->perform(w->conf, best);
+    int child = system->perform(w->conf, best, w->outcomes[best]);
     if (cost) *cost += log(w->outcomes[best]);
 
     // If a node was linked, recompute its embeddings as deprel has changed
@@ -168,6 +168,7 @@ void parser_nn::parse_beam_search(tree& t, unsigned beam_size, double* cost) con
             w->bs_alternatives.pop_back();
           }
           w->bs_alternatives.emplace_back(&bs_conf, i, cost);
+          w->bs_alternatives.back().prob = w->outcomes[i];
           push_heap(w->bs_alternatives.begin(), w->bs_alternatives.end());
         }
     }
@@ -179,7 +180,7 @@ void parser_nn::parse_beam_search(tree& t, unsigned beam_size, double* cost) con
       bs_conf_new.cost = alternative.cost;
       if (alternative.transition >= 0) {
         bs_conf_new.refresh_tree();
-        system->perform(bs_conf_new.conf, alternative.transition);
+        system->perform(bs_conf_new.conf, alternative.transition, alternative.prob);
         bs_conf_new.save_tree();
       }
     }
@@ -203,6 +204,7 @@ void parser_nn::workspace::beam_size_configuration::refresh_tree() {
   for (size_t i = 0; i < conf.t->nodes.size(); i++) {
     conf.t->nodes[i].head = heads[i];
     conf.t->nodes[i].deprel = deprels[i];
+    conf.t->nodes[i].prob = probs[i];
     if (heads[i] >= 0) conf.t->nodes[heads[i]].children.push_back(i);
   }
 }
@@ -210,9 +212,11 @@ void parser_nn::workspace::beam_size_configuration::refresh_tree() {
 void parser_nn::workspace::beam_size_configuration::save_tree() {
   if (conf.t->nodes.size() > heads.size()) heads.resize(conf.t->nodes.size());
   if (conf.t->nodes.size() > deprels.size()) deprels.resize(conf.t->nodes.size());
+  if (conf.t->nodes.size() > probs.size()) probs.resize(conf.t->nodes.size());
   for (size_t i = 0; i < conf.t->nodes.size(); i++) {
     heads[i] = conf.t->nodes[i].head;
     deprels[i] = conf.t->nodes[i].deprel;
+    probs[i] = conf.t->nodes[i].prob;
   }
 }
 

@@ -31,7 +31,7 @@ class sentence {
   bool empty();
   void clear();
   word& add_word(string_piece form = string_piece());
-  void set_head(int id, int head, const string& deprel);
+  void set_head(int id, int head, const string& deprel, float prob = 0.0);
   void unlink_all_words();
 
   // CoNLL-U defined comments

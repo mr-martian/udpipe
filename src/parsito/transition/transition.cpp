@@ -21,13 +21,13 @@ bool transition_left_arc::applicable(const configuration& conf) const {
     return conf.stack.size() >= 2 && conf.stack[conf.stack.size() - 2];
 }
 
-int transition_left_arc::perform(configuration& conf) const {
+int transition_left_arc::perform(configuration& conf, float prob) const {
   assert(applicable(conf));
 
   int parent = conf.stack.back(); conf.stack.pop_back();
   int child = conf.stack.back(); conf.stack.pop_back();
   conf.stack.push_back(parent);
-  conf.t->set_head(child, parent, label);
+  conf.t->set_head(child, parent, label, prob);
   return child;
 }
 
@@ -41,12 +41,12 @@ bool transition_right_arc::applicable(const configuration& conf) const {
     return conf.stack.size() >= 2;
 }
 
-int transition_right_arc::perform(configuration& conf) const {
+int transition_right_arc::perform(configuration& conf, float prob) const {
   assert(applicable(conf));
 
   int child = conf.stack.back(); conf.stack.pop_back();
   int parent = conf.stack.back();
-  conf.t->set_head(child, parent, label);
+  conf.t->set_head(child, parent, label, prob);
   return child;
 }
 
@@ -55,7 +55,7 @@ bool transition_shift::applicable(const configuration& conf) const {
   return !conf.buffer.empty();
 }
 
-int transition_shift::perform(configuration& conf) const {
+int transition_shift::perform(configuration& conf, float prob) const {
   assert(applicable(conf));
 
   conf.stack.push_back(conf.buffer.back());
@@ -68,7 +68,7 @@ bool transition_swap::applicable(const configuration& conf) const {
   return conf.stack.size() >= 2 && conf.stack[conf.stack.size() - 2] && conf.stack[conf.stack.size() - 2] < conf.stack[conf.stack.size() - 1];
 }
 
-int transition_swap::perform(configuration& conf) const {
+int transition_swap::perform(configuration& conf, float prob) const {
   assert(applicable(conf));
 
   int top = conf.stack.back(); conf.stack.pop_back();
@@ -86,7 +86,7 @@ bool transition_left_arc_2::applicable(const configuration& conf) const {
     return conf.stack.size() >= 3 && conf.stack[conf.stack.size() - 3];
 }
 
-int transition_left_arc_2::perform(configuration& conf) const {
+int transition_left_arc_2::perform(configuration& conf, float prob) const {
   assert(applicable(conf));
 
   int parent = conf.stack.back(); conf.stack.pop_back();
@@ -94,7 +94,7 @@ int transition_left_arc_2::perform(configuration& conf) const {
   int child = conf.stack.back(); conf.stack.pop_back();
   conf.stack.push_back(ignore);
   conf.stack.push_back(parent);
-  conf.t->set_head(child, parent, label);
+  conf.t->set_head(child, parent, label, prob);
   return child;
 }
 
@@ -108,14 +108,14 @@ bool transition_right_arc_2::applicable(const configuration& conf) const {
     return conf.stack.size() >= 3;
 }
 
-int transition_right_arc_2::perform(configuration& conf) const {
+int transition_right_arc_2::perform(configuration& conf, float prob) const {
   assert(applicable(conf));
 
   int child = conf.stack.back(); conf.stack.pop_back();
   int to_buffer = conf.stack.back(); conf.stack.pop_back();
   int parent = conf.stack.back();
   conf.buffer.push_back(to_buffer);
-  conf.t->set_head(child, parent, label);
+  conf.t->set_head(child, parent, label, prob);
   return child;
 }
 

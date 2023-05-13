@@ -163,6 +163,10 @@ string& token::start_misc_field(string_piece name) {
   return misc;
 }
 
+void token::set_prob(float prob) {
+  start_misc_field("Prob").append(to_string(prob));
+}
+
 void token::append_escaped_spaces(string_piece spaces, string& escaped_spaces) const {
   for (unsigned i = 0; i < spaces.len; i++)
     switch (spaces.str[i]) {

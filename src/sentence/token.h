@@ -19,6 +19,7 @@ class token {
  public:
   string form;
   string misc;
+  float prob = 0.0;
 
   token(string_piece form = string_piece(), string_piece misc = string_piece());
 
@@ -37,6 +38,8 @@ class token {
   // UDPipe-specific TokenRange feature
   bool get_token_range(size_t& start, size_t& end) const;
   void set_token_range(size_t start, size_t end);
+
+  void set_prob(float prob);
 
  private:
   bool get_misc_field(string_piece name, string_piece& value) const;

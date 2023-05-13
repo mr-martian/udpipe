@@ -162,7 +162,13 @@ void tree_output_format_conllu::write_tree(const tree& t, string& output, const 
     output.append(t.nodes[i].head < 0 ? "_" : to_string(t.nodes[i].head)).push_back('\t');
     output.append(underscore_on_empty(t.nodes[i].deprel)).push_back('\t');
     output.append(underscore_on_empty(t.nodes[i].deps)).push_back('\t');
-    output.append(underscore_on_empty(t.nodes[i].misc)).push_back('\n');
+    auto misc = t.nodes[i].misc;
+    if (t.nodes[i].prob > 0 || true) {
+      if (!misc.empty()) misc += '|';
+      misc += "Prob=";
+      misc += to_string(t.nodes[i].prob);
+    }
+    output.append(underscore_on_empty(misc)).push_back('\n');
   }
   output.push_back('\n');
 }

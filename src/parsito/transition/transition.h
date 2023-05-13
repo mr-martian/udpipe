@@ -23,7 +23,7 @@ class transition {
   virtual ~transition() {}
 
   virtual bool applicable(const configuration& conf) const = 0;
-  virtual int perform(configuration& conf) const = 0;
+  virtual int perform(configuration& conf, float prob) const = 0;
 };
 
 // Specific transition classes
@@ -32,7 +32,7 @@ class transition_left_arc : public transition {
   transition_left_arc(const string& label) : label(label), label_is_root(label == "root") {}
 
   virtual bool applicable(const configuration& conf) const override;
-  virtual int perform(configuration& conf) const override;
+  virtual int perform(configuration& conf, float prob) const override;
  private:
   string label;
   bool label_is_root;
@@ -43,7 +43,7 @@ class transition_right_arc : public transition {
   transition_right_arc(const string& label) : label(label), label_is_root(label == "root") {}
 
   virtual bool applicable(const configuration& conf) const override;
-  virtual int perform(configuration& conf) const override;
+  virtual int perform(configuration& conf, float prob) const override;
  private:
   string label;
   bool label_is_root;
@@ -52,13 +52,13 @@ class transition_right_arc : public transition {
 class transition_shift : public transition {
  public:
   virtual bool applicable(const configuration& conf) const override;
-  virtual int perform(configuration& conf) const override;
+  virtual int perform(configuration& conf, float prob) const override;
 };
 
 class transition_swap : public transition {
  public:
   virtual bool applicable(const configuration& conf) const override;
-  virtual int perform(configuration& conf) const override;
+  virtual int perform(configuration& conf, float prob) const override;
 };
 
 class transition_left_arc_2 : public transition {
@@ -66,7 +66,7 @@ class transition_left_arc_2 : public transition {
   transition_left_arc_2(const string& label) : label(label), label_is_root(label == "root") {}
 
   virtual bool applicable(const configuration& conf) const override;
-  virtual int perform(configuration& conf) const override;
+  virtual int perform(configuration& conf, float prob) const override;
  private:
   string label;
   bool label_is_root;
@@ -77,7 +77,7 @@ class transition_right_arc_2 : public transition {
   transition_right_arc_2(const string& label) : label(label), label_is_root(label == "root") {}
 
   virtual bool applicable(const configuration& conf) const override;
-  virtual int perform(configuration& conf) const override;
+  virtual int perform(configuration& conf, float prob) const override;
  private:
   string label;
   bool label_is_root;
